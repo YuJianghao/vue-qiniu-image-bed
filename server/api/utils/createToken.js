@@ -1,4 +1,4 @@
-var { jsonTokenSecret, saltRounds, tokenExp } = require('../settings/settings')
+var { jsonTokenSecret, tokenExp } = require('../settings/settings')
 var jwt = require('jsonwebtoken')
 
 module.exports = function() {

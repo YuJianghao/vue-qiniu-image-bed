@@ -1,9 +1,7 @@
 const qiniu = require('qiniu')
 const request = require('superagent')
 const formidable = require('formidable')
-const util = require('util');
 const qiniuUtil = require('../utils/qiniu')
-const bodyParser = require('body-parser')
 
 function renderUniFileName(type) {
   const map = {
@@ -91,7 +89,6 @@ function uploadFile(req, res) {
             reject(respErr);
             return;
           }
-          console.log(respBody)
           if (respInfo.statusCode == 200) {
             resolve({
               hash: respInfo.data.hash,
@@ -100,7 +97,6 @@ function uploadFile(req, res) {
             })
           } else {
             reject(respBody)
-            console.log(respInfo.statusCode);
           }
         });
 
@@ -177,7 +173,6 @@ function fetchAndUpload(req, res) {
           key: respBody.key
         })
       } else {
-        console.log(respInfo)
         res.json({
           code: respInfo.status,
           error: respBody.error
@@ -212,18 +207,11 @@ function getImageInfo(req, res) {
     } else {
       if (respInfo.statusCode == 200) {
         res.json(respBody)
-        console.log(respBody.hash);
-        console.log(respBody.fsize);
-        console.log(respBody.mimeType);
-        console.log(respBody.putTime);
-        console.log(respBody.type);
       } else {
         res.json({
           code: respInfo.statusCode,
           error: respBody.error
         })
-        console.log(respInfo.statusCode);
-        console.log(respBody.error);
       }
     }
   });
@@ -242,7 +230,6 @@ function getImageList(req, res) {
   const marker = req.body.marker || ''
   const limit = req.body.limit || 20
 
-  console.log(accessKey)
   var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
 
   if (!Object.keys(req.body).length) {
